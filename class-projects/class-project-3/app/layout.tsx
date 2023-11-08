@@ -6,8 +6,17 @@ import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Class-project-3",
+  title: "Lab Project",
   description: "FESB UI",
+};
+
+const pages = {
+  Početna: "/",
+  Popis: "/popis",
+  Nabava: "/nabava",
+  Zdravlje: "/zdravlje",
+  Profil: "/profil",
+  Blog: "/blog",
 };
 
 export default function RootLayout({
@@ -17,26 +26,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} "flex min-h-screen items-center justify-between p-24`}
-      >
+      <body className={`${inter.className} "flex min-h-screen items-center justify-between p-24`}>
         <nav>
           <ul className="flex justify-center gap-10 text-lg">
-            <li>
-              <Link href="/">Home</Link>
+          {Object.entries(pages).map(([name, path]) => (
+            <li key={name}>
+              <Link href={path}>{name}</Link>
             </li>
-            <li>
-              <Link href="/popis">Popis</Link>
-            </li>
-            <li>
-              <Link href="/nabava">Nabava</Link>
-            </li>
-            <li>
-              <Link href="/zdravlje">Zdravlje</Link>
-            </li>
-            <li>
-              <Link href="/profil">Profil</Link>
-            </li>
+            ))}
           </ul>
         </nav>
         <main className="flex justify-center mt-12">{children}</main>
