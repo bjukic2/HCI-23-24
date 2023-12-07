@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Logo from "./Logo";
 
 interface NavbarProps {
@@ -15,23 +15,49 @@ const baseClass =
 
 const Navbar: FC<NavbarProps> = ({ pages }) => {
   const pathName = usePathname();
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <section className="container flex items-center justify-between mx-auto">
-      <Logo />
-      <nav className="flex items-center justify-center p-4">
-        <ul className="flex gap-2">
+    <section className="container flex p-4 flex-col md:flex-row justify-between mx-auto">
+      <div className="flex justify-between">
+        <Logo />
+        {/* Hamburger Menu Icon */}
+        <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </div>
+      </div>
+
+      {/* Navigation Menu */}
+      <nav className={`md:flex items-center justify-center p-4 ${isMenuOpen ? "flex" : "hidden"}`}>
+        <ul className="flex flex-col md:flex-row gap-2">
           {Object.entries(pages).map(([name, path]) => (
             <li key={name}>
               <Link href={path}>
-              <span
-                className={cn(baseClass, {
-                  "bg-brand-purple-700 text-brand-purple-100 pointer-events-none":
-                    path === pathName,
-                })}
-              >
-                {name}
-              </span>
+                <span
+                  className={cn(baseClass, {
+                    "bg-brand-purple-700 text-brand-purple-100 pointer-events-none":
+                      path === pathName,
+                  })}
+                >
+                  {name}
+                </span>
               </Link>
             </li>
           ))}
@@ -39,5 +65,6 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
       </nav>
     </section>
   );
-}
+};
+
 export default Navbar;

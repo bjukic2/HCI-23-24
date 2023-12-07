@@ -18,7 +18,7 @@ const images: HeroImageObject[] = [
 ];
 
 const HeroSection = () => (
-  <section className="container flex justify-between items-center gap-10 w-screen">
+  <section className="container flex flex-col sm:flex-row lg:flex-row justify-between items-center gap-10 w-screen">
     <div className="flex flex-col justify-start gap-5 max-w-xl">
       <h1 className="font-playfair text-5xl font-extrabold text-black whitespace-break-spaces">
         Ušteda novca i kupovina namirnica na pravi način.
