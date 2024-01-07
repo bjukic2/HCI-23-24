@@ -5,10 +5,10 @@ export const metadata = {
 };
 
 
-const page = () => {
+const Page = () => {
   return (
       <h2 className="text-3xl text-black">Nabava</h2>
   );
 };
 
-export default page;
+export default Page;

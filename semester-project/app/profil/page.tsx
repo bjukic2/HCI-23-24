@@ -1,13 +1,18 @@
 import React from "react";
+import './profil.css';
+import Profil from '@/components/Profil';
 
 export const metadata = {
   title: "Profil",
-};
+}
 
-const page = () => {
-  return (
-      <h2 className="text-3xl text-black">Profil</h2>
+
+const Page = () => {
+  return(
+    <div>
+      <Profil />
+    </div>
   );
 };
 
-export default page;
+export default Page;
