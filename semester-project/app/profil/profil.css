@@ -46,7 +46,9 @@
     height: auto;
     background: #eaeaea;
     border-radius: 6px;
-    padding: auto;
+    padding-left: auto;
+    padding-top: auto;
+    padding-bottom: auto;
     padding-left: 30px;
     gap: 20px;
 }
