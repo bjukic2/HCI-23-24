@@ -18,7 +18,7 @@ const Profil = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='containerLogin'>
           <div className='header'>
             <div className='text'>{action}</div>
             <div className='underline'></div>
