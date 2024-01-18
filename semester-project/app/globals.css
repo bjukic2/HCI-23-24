@@ -41,3 +41,38 @@ body {
   stroke: #780022;
   stroke-width: 1;
 }
+
+.not-found{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #5B001C;
+  gap: 15px;
+  font-size: 35px;
+  margin: 100px 50px;
+}
+
+.pocetna{
+  color: #C70C63;
+  text-decoration: underline;
+}
+
+.icon{
+  width: 7rem;
+  height: 7rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .not-found {
+    font-size: 25px;
+    width: 65%;
+    margin: 50px auto;
+    text-align: center;
+  }
+
+  .icon {
+    width: 5rem;
+    height: 5rem;
+  }
+}
