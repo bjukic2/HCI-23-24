@@ -1,5 +1,5 @@
-import Link from "next/link";
-import clsx from "clsx";
+import Link from 'next/link';
+import clsx from 'clsx';
 
 export interface Post {
   userId: number;
@@ -13,26 +13,26 @@ interface Pagination {
   page: number;
 }
 
-const BASE_API_URL = "https://jsonplaceholder.typicode.com";
+const BASE_API_URL = 'https://jsonplaceholder.typicode.com';
 
 const getPosts = async (
   pagination: Pagination = {
     limit: 9999,
     page: 1,
-  }
+  },
 ): Promise<Post[]> => {
   const data = await fetch(
-    `${BASE_API_URL}/posts?_limit=${pagination.limit}&_page=${pagination.page}`
+    `${BASE_API_URL}/posts?_limit=${pagination.limit}&_page=${pagination.page}`,
   );
   return data.json();
 };
 
 const getTotalPosts = async (): Promise<number> => {
   const response = await fetch(`${BASE_API_URL}/posts?_limit=1`, {
-    method: "HEAD",
+    method: 'HEAD',
   });
   // get x-total-count header
-  return parseInt(response.headers.get("x-total-count") || "1", 10);
+  return parseInt(response.headers.get('x-total-count') || '1', 10);
 };
 
 export default async function Blog({
@@ -51,8 +51,8 @@ export default async function Blog({
   });
 
   return (
-    <main className="flex flex-col items-center min-h-screen max-w-5xl m-auto p-10">
-      <h1 className="text-3xl font-bold p-10 text-black">Blog Index Page</h1>
+    <main className="m-auto flex min-h-screen max-w-5xl flex-col items-center p-10">
+      <h1 className="p-10 text-3xl font-bold text-black">Blog Index Page</h1>
 
       {_limit && _page && (
         <div className="flex items-baseline gap-8 pb-10">
@@ -62,7 +62,7 @@ export default async function Blog({
           <div className="flex gap-4">
             <Link
               href={{
-                pathname: "/blog",
+                pathname: '/blog',
                 query: { _page: 1, _limit: pageSize },
               }}
               className="rounded border bg-gray-100 px-3 py-1 text-gray-800"
@@ -71,31 +71,31 @@ export default async function Blog({
             </Link>
             <Link
               href={{
-                pathname: "/blog",
+                pathname: '/blog',
                 query: { _page: page > 1 ? page - 1 : 1, _limit: pageSize },
               }}
               className={clsx(
-                "rounded border bg-gray-100 px-3 py-1 text-gray-800",
-                page === 1 && "pointer-events-none opacity-50"
+                'rounded border bg-gray-100 px-3 py-1 text-gray-800',
+                page === 1 && 'pointer-events-none opacity-50',
               )}
             >
               Previous
             </Link>
             <Link
               href={{
-                pathname: "/blog",
+                pathname: '/blog',
                 query: { _page: page + 1, _limit: pageSize },
               }}
               className={clsx(
-                "rounded border bg-gray-100 px-3 py-1 text-gray-800",
-                page === totalPages && "pointer-events-none opacity-50"
+                'rounded border bg-gray-100 px-3 py-1 text-gray-800',
+                page === totalPages && 'pointer-events-none opacity-50',
               )}
             >
               Next
             </Link>
             <Link
               href={{
-                pathname: "/blog",
+                pathname: '/blog',
                 query: { _page: totalPages, _limit: pageSize },
               }}
               className="rounded border bg-gray-100 px-3 py-1 text-gray-800"

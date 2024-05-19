@@ -1,8 +1,8 @@
-import HeroSection from "./_components/HeroSection";
+import HeroSection from './_components/HeroSection';
 
 export default function Home() {
   return (
-    <main className="flex flex-col justify-between items-center">
+    <main className="flex flex-col items-center justify-between">
       <HeroSection />
     </main>
   );
