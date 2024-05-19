@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FC } from 'react';
 
-import LogoIcon from "./icons/logoIcon";
+import LogoIcon from './icons/logoIcon';
 
 const Logo: FC = () => (
-  <div className="flex items-center justify-between max-w-min gap-2">
+  <div className="flex max-w-min items-center justify-between gap-2">
     <LogoIcon />
-    <span className="font-roboto-condensed font-bold text-3xl whitespace-nowrap text-brand-purple-900">
+    <span className="whitespace-nowrap font-roboto-condensed text-3xl font-bold text-brand-purple-900">
       eDucan
     </span>
   </div>

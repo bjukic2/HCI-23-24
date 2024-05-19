@@ -1,14 +1,13 @@
-import React from "react";
+import React from 'react';
 import './profil.css';
 import Profil from '@/components/Profil';
 
 export const metadata = {
-  title: "Profil",
-}
-
+  title: 'Profil',
+};
 
 const Page = () => {
-  return(
+  return (
     <div>
       <Profil />
     </div>

@@ -1,9 +1,9 @@
-"use client";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FC, useState } from "react";
-import Logo from "./Logo";
+'use client';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { FC, useState } from 'react';
+import Logo from './Logo';
 
 interface NavbarProps {
   // Record of string keys and string values where each value is a path starting with a slash
@@ -11,7 +11,7 @@ interface NavbarProps {
 }
 
 const baseClass =
-  "uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-brand-purple-900 hover:bg-brand-purple-200";
+  'uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-brand-purple-900 hover:bg-brand-purple-200';
 
 const Navbar: FC<NavbarProps> = ({ pages }) => {
   const pathName = usePathname();
@@ -22,13 +22,13 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
   };
 
   return (
-    <section className="container flex p-4 flex-col md:flex-row justify-between mx-auto">
+    <section className="container mx-auto flex flex-col justify-between p-4 md:flex-row">
       <div className="flex justify-between">
         <Logo />
         {/* Hamburger Menu Icon */}
-        <div className="md:hidden cursor-pointer" onClick={toggleMenu}>
+        <div className="cursor-pointer md:hidden" onClick={toggleMenu}>
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="#5B001C"
             viewBox="0 0 24 24"
@@ -45,14 +45,16 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
       </div>
 
       {/* Navigation Menu */}
-      <nav className={`md:flex items-center justify-center p-4 ${isMenuOpen ? "flex" : "hidden"}`}>
-        <ul className="flex flex-col md:flex-row gap-2">
+      <nav
+        className={`items-center justify-center p-4 md:flex ${isMenuOpen ? 'flex' : 'hidden'}`}
+      >
+        <ul className="flex flex-col gap-2 md:flex-row">
           {Object.entries(pages).map(([name, path]) => (
             <li key={name}>
               <Link href={path}>
                 <span
                   className={cn(baseClass, {
-                    "bg-brand-purple-700 text-brand-purple-100 pointer-events-none":
+                    'pointer-events-none bg-brand-purple-700 text-brand-purple-100':
                       path === pathName,
                   })}
                 >

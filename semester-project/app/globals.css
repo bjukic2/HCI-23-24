@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 244,230,241;
+  --foreground-rgb: 244, 230, 241;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
@@ -11,8 +11,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 244,230,241;
-    --background-end-rgb: 244,230,241;
+    --background-start-rgb: 244, 230, 241;
+    --background-end-rgb: 244, 230, 241;
   }
 }
 
@@ -24,11 +24,11 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .svg-icon {
@@ -47,23 +47,23 @@ body {
   stroke-width: 1;
 }
 
-.not-found{
+.not-found {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: #5B001C;
+  color: #5b001c;
   gap: 15px;
   font-size: 35px;
   margin: 100px 50px;
 }
 
-.pocetna{
-  color: #C70C63;
+.pocetna {
+  color: #c70c63;
   text-decoration: underline;
 }
 
-.icon{
+.icon {
   width: 7rem;
   height: 7rem;
 }
