@@ -1,8 +1,19 @@
 "use client";
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import '@/app/globals.css';
+
+// Define the Product interface
+interface Product {
+  proizvodIme: string;
+  proizvodLink: string;
+  proizvodCijena: number;
+  proizvodSlika: {
+    fileName: string;
+    description: string;
+    url: string;
+  };
+}
 
 const query = `
 {
@@ -21,7 +32,7 @@ const query = `
 }`;
 
 function Nabava() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     window
@@ -43,7 +54,7 @@ function Nabava() {
       });
   }, []);
 
-  if(!products) {
+  if(!products.length) {
     return (
       <div className="loading">Loading...</div>
     );
@@ -57,7 +68,7 @@ function Nabava() {
             src={product.proizvodSlika.url} 
             alt={product.proizvodSlika.description}
             width={300}
-            height={272} 
+            height={300} 
             className="product-image" />
           <h2 className="product-name">{product.proizvodIme}</h2>
           <p className="product-price">Cijena: {product.proizvodCijena}€</p>
@@ -67,8 +78,5 @@ function Nabava() {
     </div>
   );
 };
-
-
-
 
 export default Nabava;
