@@ -14,7 +14,7 @@ export default function Footer() {
           <Link href="/popis">Popis</Link>
         </p>
         <p>
-          <Link href="/nabava">Nabava</Link>
+          <Link href="/cms/nabava">Nabava</Link>
         </p>
         <p>
           <Link href="/zdravlje">Zdravlje</Link>
