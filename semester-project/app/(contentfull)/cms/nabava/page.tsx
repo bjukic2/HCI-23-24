@@ -31,30 +31,45 @@ const query = `
   }
 }`;
 
-function Nabava() {
+const Nabava = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    window
-      .fetch(`https://graphql.contentful.com/content/v1/spaces/dcgmj6c5ru3n`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer TuxTwnja4_5VcZyqibhnVJxTxC5Z1jqqk-sMiVZswx8",
-        },
-        body: JSON.stringify({ query }),
-      })
-      .then((response) => response.json())
-      .then(({ data, errors }) => {
-        if (errors) {
-          console.error(errors);
+    // Log environment variables
+    console.log("Space ID:", process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
+    console.log("Access Token:", process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN);
+
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        setProducts(data.proizvodCollection.items);
-      });
+        const { data, errors } = await response.json();
+        if (errors) {
+          console.error(errors);
+        } else {
+          console.log('Data:', data);
+          setProducts(data.proizvodCollection.items);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  if(!products.length) {
+  if (!products.length) {
     return (
       <div className="loading">Loading...</div>
     );
@@ -69,7 +84,8 @@ function Nabava() {
             alt={product.proizvodSlika.description}
             width={300}
             height={300} 
-            className="product-image" />
+            className="product-image" 
+          />
           <h2 className="product-name">{product.proizvodIme}</h2>
           <p className="product-price">Cijena: {product.proizvodCijena}€</p>
           <a href={product.proizvodLink} className="product-link">View Product</a>
