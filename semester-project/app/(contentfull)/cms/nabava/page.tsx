@@ -35,10 +35,6 @@ const Nabava = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Log environment variables
-    console.log("Space ID:", process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID);
-    console.log("Access Token:", process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN);
-
     const fetchProducts = async () => {
       try {
         const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`, {
