@@ -15,7 +15,7 @@ const config: Config = {
         playfair: ['var(--font-playfair)'],
       },
       colors: {
-        'brand-purple': {
+        'brand': {
           50: '#FEE9F2',
           100: '#FED4E5',
           200: '#F3A1C1',

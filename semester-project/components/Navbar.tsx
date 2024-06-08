@@ -11,7 +11,7 @@ interface NavbarProps {
 }
 
 const baseClass =
-  'uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-brand-purple-900 hover:bg-brand-purple-200';
+  'uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-brand-900 hover:bg-brand-200';
 
 const Navbar: FC<NavbarProps> = ({ pages }) => {
   const pathName = usePathname();
@@ -54,7 +54,7 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
               <Link href={path}>
                 <span
                   className={cn(baseClass, {
-                    'pointer-events-none bg-brand-purple-700 text-brand-purple-100':
+                    'pointer-events-none bg-brand-700 text-brand-100':
                       path === pathName,
                   })}
                 >

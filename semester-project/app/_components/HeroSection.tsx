@@ -25,7 +25,7 @@ const HeroSection = () => (
       </h1>
       <p className="whitespace-break-spaces font-roboto text-lg text-black">
         Dobrodošli u{' '}
-        <span className="whitespace-nowrap font-roboto-condensed text-xl font-bold text-brand-purple-900">
+        <span className="whitespace-nowrap font-roboto-condensed text-xl font-bold text-brand-900">
           eDućan
         </span>
         , gdje možete vidjeti cijene proizvoda iz velikog broja trgovina.
