@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState, useEffect } from 'react';
 import '@/app/globals.css';
 import ProductCard from '@/components/ProductCard';
@@ -17,7 +17,9 @@ const Nabava = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [productsPerPage, setProductsPerPage] = useState<number>(DEFAULT_PRODUCTS_PER_PAGE);
+  const [productsPerPage, setProductsPerPage] = useState<number>(
+    DEFAULT_PRODUCTS_PER_PAGE,
+  );
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,14 +37,17 @@ const Nabava = () => {
       }`;
 
       try {
-        const response = await fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
+        const response = await fetch(
+          `https://graphql.contentful.com/content/v1/spaces/dcgmj6c5ru3n`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer TuxTwnja4_5VcZyqibhnVJxTxC5Z1jqqk-sMiVZswx8`,
+            },
+            body: JSON.stringify({ query }),
           },
-          body: JSON.stringify({ query }),
-        });
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -54,7 +59,9 @@ const Nabava = () => {
         } else {
           console.log('Data:', data);
           setProducts(data.productCollection.items);
-          setTotalPages(Math.ceil(data.productCollection.total / productsPerPage));
+          setTotalPages(
+            Math.ceil(data.productCollection.total / productsPerPage),
+          );
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -66,19 +73,22 @@ const Nabava = () => {
 
   if (!products.length) {
     return (
-      <div className="loading">Loading...</div>
+      <div className="flex mt-auto flex-col text-2xl h-full items-center justify-center text-brand-800">
+        Učitavanje proizvoda
+        <span className="mt-20 loading loading-ring loading-lg"></span>
+      </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-screen-lg flex flex-col items-center justify-center h-full text-brand-500">
+    <div className="mx-auto flex h-full max-w-screen-lg flex-col items-center justify-center text-brand-500">
       <div className="mb-4">
         <label htmlFor="productsPerPage">Proizvoda po stranici: </label>
         <select
           id="productsPerPage"
           value={productsPerPage}
           onChange={(e) => setProductsPerPage(Number(e.target.value))}
-          className="border border-gray-300 rounded-md px-2 py-1"
+          className="rounded-md border border-gray-300 px-2 py-1"
         >
           <option value={10}>10</option>
           <option value={20}>20</option>
@@ -86,15 +96,15 @@ const Nabava = () => {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product.naziv} product={product} />
         ))}
       </div>
 
-      <div className="flex justify-center items-center m-7">
+      <div className="m-7 flex items-center justify-center">
         <button
-          className="outline outline-brand-800 hover:bg-brand-800 hover:text-white text-brand-800 font-bold py-2 px-4 rounded"
+          className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
           onClick={() => setCurrentPage((page) => Math.max(page - 1, 1))}
         >
           Previous
@@ -103,15 +113,15 @@ const Nabava = () => {
           {currentPage} / {totalPages}
         </span>
         <button
-          className="outline outline-brand-800 hover:bg-brand-800 hover:text-white text-brand-800 font-bold py-2 px-4 rounded"
-          onClick={() => setCurrentPage((page) => Math.min(page + 1, totalPages))}
+          className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
+          onClick={() =>
+            setCurrentPage((page) => Math.min(page + 1, totalPages))
+          }
         >
           Next
         </button>
       </div>
     </div>
-
-    
   );
 };
 

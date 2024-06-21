@@ -36,9 +36,9 @@ export default function Footer() {
       </div>
       <div className="info-column">
         <h1 className="title">Kontakt</h1>
-        <p>1-800-EDUCAN-SADA</p>
-        <p>info@educan.com</p>
-        <p>@eDucan_24</p>
+        <p>1-800-PAZZAR-SADA</p>
+        <p>info@pazzar.com</p>
+        <p>@pazzar_24</p>
         <p>Ulica Štednje 12, Split</p>
       </div>
     </footer>

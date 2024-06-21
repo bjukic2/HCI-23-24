@@ -23,10 +23,10 @@ const playfairDisplay = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    template: 'Lab project | %s',
-    default: 'Lab project',
+    template: 'Pazzar | %s',
+    default: 'Pazzar',
   },
-  description: 'Next.js lab project',
+  description: 'Kupovina namirnica na pravi način.',
 };
 
 // Get this info from some external source (e.g. CMS)
@@ -45,7 +45,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="hr">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
         className={clsx(
           roboto.variable,

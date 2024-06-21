@@ -3,8 +3,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useState } from 'react';
-import Logo from './Logo';
-
+import LogoIcon from './icons/logoIcon';
 interface NavbarProps {
   // Record of string keys and string values where each value is a path starting with a slash
   pages: Record<string, `/${string}`>;
@@ -24,7 +23,14 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
   return (
     <section className="container mx-auto flex flex-col justify-between p-4 md:flex-row">
       <div className="flex justify-between">
-        <Logo />
+        <Link href="/">
+          <div className="flex max-w-min items-center justify-between gap-2">
+            <LogoIcon />
+            <span className="whitespace-nowrap font-roboto-condensed text-3xl font-bold text-brand-900">
+              Pazzar
+            </span>
+          </div>
+        </Link>
         {/* Hamburger Menu Icon */}
         <div className="cursor-pointer md:hidden" onClick={toggleMenu}>
           <svg
