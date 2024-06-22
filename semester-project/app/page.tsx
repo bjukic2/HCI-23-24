@@ -29,7 +29,7 @@ const HeroSection = () => (
     </div>
     <div className="">
       <Image
-        alt={""}
+        alt={" "}
         src={images[0].image}
         width={500} // Adjust the width value to make the image smaller
         height={500} // Adjust the height value to maintain the aspect ratio
