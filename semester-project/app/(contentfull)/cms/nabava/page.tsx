@@ -20,12 +20,15 @@ const Nabava = () => {
   const [productsPerPage, setProductsPerPage] = useState<number>(
     DEFAULT_PRODUCTS_PER_PAGE,
   );
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const query = `
+    const fetchProductsAndCategories = async () => {
+      const categoryFilter = selectedCategory ? `, where: { kategorija: "${selectedCategory}" }` : '';
+      const productsQuery = `
       {
-        productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
+        productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage} ${categoryFilter}){
           total
           items {
             kategorija,
@@ -36,40 +39,74 @@ const Nabava = () => {
         }
       }`;
 
+      const categoriesQuery = `
+      {
+        productCollection {
+          items {
+            kategorija
+          }
+        }
+      }`;
+
       try {
-        const response = await fetch(
-          `https://graphql.contentful.com/content/v1/spaces/dcgmj6c5ru3n`,
+        const productsResponse = await fetch(
+          `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer TuxTwnja4_5VcZyqibhnVJxTxC5Z1jqqk-sMiVZswx8`,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
             },
-            body: JSON.stringify({ query }),
+            body: JSON.stringify({ query: productsQuery }),
           },
         );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!productsResponse.ok) {
+          throw new Error(`HTTP error! Status: ${productsResponse.status}`);
         }
 
-        const { data, errors } = await response.json();
-        if (errors) {
-          console.error(errors);
+        const { data: productsData, errors: productsErrors } = await productsResponse.json();
+        if (productsErrors) {
+          console.error(productsErrors);
         } else {
-          console.log('Data:', data);
-          setProducts(data.productCollection.items);
+          setProducts(productsData.productCollection.items);
           setTotalPages(
-            Math.ceil(data.productCollection.total / productsPerPage),
+            Math.ceil(productsData.productCollection.total / productsPerPage),
           );
+        }
+
+        const categoriesResponse = await fetch(
+          `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
+            },
+            body: JSON.stringify({ query: categoriesQuery }),
+          },
+        );
+
+        if (!categoriesResponse.ok) {
+          throw new Error(`HTTP error! Status: ${categoriesResponse.status}`);
+        }
+
+        const { data: categoriesData, errors: categoriesErrors } = await categoriesResponse.json();
+        if (categoriesErrors) {
+          console.error(categoriesErrors);
+        } else {
+          const uniqueCategories: string[] = Array.from(new Set(
+            categoriesData.productCollection.items.map((item: Product) => item.kategorija)
+          ));
+          setCategories(uniqueCategories);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchProducts();
-  }, [currentPage, productsPerPage]);
+    fetchProductsAndCategories();
+  }, [currentPage, productsPerPage, selectedCategory]);
 
   if (!products.length) {
     return (
@@ -82,18 +119,36 @@ const Nabava = () => {
 
   return (
     <div className="mx-auto flex h-full max-w-screen-lg flex-col items-center justify-center text-brand-500">
-      <div className="mb-4">
-        <label htmlFor="productsPerPage">Proizvoda po stranici: </label>
-        <select
-          id="productsPerPage"
-          value={productsPerPage}
-          onChange={(e) => setProductsPerPage(Number(e.target.value))}
-          className="rounded-md border border-gray-300 px-2 py-1"
-        >
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-        </select>
+      <div className="mb-4 flex space-x-4">
+        <div>
+          <label htmlFor="productsPerPage" className="mr-2">Proizvoda po stranici: </label>
+          <select
+            id="productsPerPage"
+            value={productsPerPage}
+            onChange={(e) => setProductsPerPage(Number(e.target.value))}
+            className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="categoryFilter" className="mr-2">Kategorija: </label>
+          <select
+            id="categoryFilter"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
+          >
+            <option value="">Sve kategorije</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
