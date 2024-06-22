@@ -8,7 +8,7 @@ Deployed the app using Vercel
 
 ## Link
 
-https://educan.vercel.app/
+https://pazzar.vercel.app/
 
 ## Dynamic routes and fetching data
 
