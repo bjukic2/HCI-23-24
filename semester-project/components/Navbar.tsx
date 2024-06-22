@@ -10,7 +10,7 @@ interface NavbarProps {
 }
 
 const baseClass =
-  'uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-brand-900 hover:bg-brand-200';
+  'uppercase whitespace-nowrap font-roboto-condensed text-base px-5 py-3 rounded-sm text-zelena-300 hover:bg-zelena-200 hover:text-white duration-200';
 
 const Navbar: FC<NavbarProps> = ({ pages }) => {
   const pathName = usePathname();
@@ -21,18 +21,21 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
   };
 
   return (
-    <section className="container mx-auto flex flex-col justify-between p-4 md:flex-row">
+    <section className="container mt-auto flex w-full flex-col justify-between p-4 md:flex-row">
       <div className="flex justify-between">
         <Link href="/">
-          <div className="flex max-w-min items-center justify-between gap-2">
+          <div className="ml-2 mt-2 flex max-w-min items-center justify-between gap-1">
             <LogoIcon />
-            <span className="whitespace-nowrap font-roboto-condensed text-3xl font-bold text-brand-900">
+            <span className="whitespace-nowrap font-roboto-condensed text-4xl font-bold text-zelena-300">
               Pazzar
             </span>
           </div>
         </Link>
         {/* Hamburger Menu Icon */}
-        <div className="cursor-pointer md:hidden" onClick={toggleMenu}>
+        <div
+          className="mr-2 mt-4 cursor-pointer md:hidden"
+          onClick={toggleMenu}
+        >
           <svg
             className="h-6 w-6"
             fill="none"
@@ -52,7 +55,7 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
 
       {/* Navigation Menu */}
       <nav
-        className={`items-center justify-center p-4 md:flex ${isMenuOpen ? 'flex' : 'hidden'}`}
+        className={`z-20 items-center justify-center p-4 md:flex ${isMenuOpen ? 'flex' : 'hidden'}`}
       >
         <ul className="flex flex-col gap-2 md:flex-row">
           {Object.entries(pages).map(([name, path]) => (
@@ -60,8 +63,7 @@ const Navbar: FC<NavbarProps> = ({ pages }) => {
               <Link href={path}>
                 <span
                   className={cn(baseClass, {
-                    'pointer-events-none bg-brand-700 text-brand-100':
-                      path === pathName,
+                    'pointer-events-none text-zelena-100': path === pathName,
                   })}
                 >
                   {name}

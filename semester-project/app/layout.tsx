@@ -36,7 +36,6 @@ const pages: Record<string, `/${string}`> = {
   Nabava: '/cms/nabava',
   Zdravlje: '/zdravlje',
   Profil: '/profil',
-  Blog: '/blog',
 };
 
 export default function RootLayout({

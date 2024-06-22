@@ -110,29 +110,33 @@ const Nabava = () => {
 
   if (!products.length) {
     return (
-      <div className="flex mt-auto flex-col text-2xl h-full items-center justify-center text-brand-800">
+      <div className="mt-auto flex h-full flex-col items-center justify-center text-2xl text-zelena-300">
         Učitavanje proizvoda
-        <span className="mt-20 loading loading-ring loading-lg"></span>
+        <span className="loading loading-ring loading-lg mt-20"></span>
       </div>
     );
   }
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="mx-auto flex h-full max-w-screen-lg flex-col items-center justify-center text-brand-500">
-      <div className="mb-4 flex space-x-4">
-        <div>
-          <label htmlFor="productsPerPage" className="mr-2">Proizvoda po stranici: </label>
-          <select
-            id="productsPerPage"
-            value={productsPerPage}
-            onChange={(e) => setProductsPerPage(Number(e.target.value))}
-            className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-          </select>
-        </div>
+    <div className="mx-auto flex h-full w-full flex-col items-center justify-center text-zelena-300">
+      <select
+        id="productsPerPage"
+        value={productsPerPage}
+        onChange={(e) => setProductsPerPage(Number(e.target.value))}
+        className="select select-bordered mb-10"
+      >
+        <option disabled selected>
+          Proizvoda po stranici:
+        </option>
+        <option value={10}>10</option>
+        <option value={20}>20</option>
+        <option value={50}>50</option>
+      </select>
         <div>
           <label htmlFor="categoryFilter" className="mr-2">Kategorija: </label>
           <select
@@ -149,31 +153,30 @@ const Nabava = () => {
             ))}
           </select>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {products.map((product) => (
           <ProductCard key={product.naziv} product={product} />
         ))}
       </div>
 
-      <div className="m-7 flex items-center justify-center">
+      <div className="join mb-16 mt-16">
         <button
-          className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
-          onClick={() => setCurrentPage((page) => Math.max(page - 1, 1))}
+          className="btn join-item text-roza"
+          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
         >
-          Previous
+          «
         </button>
-        <span className="mx-4 text-brand-900">
+        <button className="btn join-item text-zelena-300">
           {currentPage} / {totalPages}
-        </span>
+        </button>
         <button
-          className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
+          className="btn join-item text-roza"
           onClick={() =>
-            setCurrentPage((page) => Math.min(page + 1, totalPages))
+            handlePageChange(Math.min(currentPage + 1, totalPages))
           }
         >
-          Next
+          »
         </button>
       </div>
     </div>
