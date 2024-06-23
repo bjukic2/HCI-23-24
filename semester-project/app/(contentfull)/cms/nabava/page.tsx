@@ -22,22 +22,27 @@ const Nabava = () => {
   );
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     const fetchProductsAndCategories = async () => {
-      const categoryFilter = selectedCategory ? `, where: { kategorija: "${selectedCategory}" }` : '';
+      const categoryFilter = selectedCategory
+        ? `, where: { kategorija: "${selectedCategory}" }`
+        : '';
       const productsQuery = `
-      {
-        productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage} ${categoryFilter}){
-          total
-          items {
-            kategorija,
-            naziv,
-            cijena,
-            slikaSrc
+        {
+          productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage} ${categoryFilter} ${
+            searchQuery ? `, where: { naziv_contains: "${searchQuery}" }` : ''
+          }){
+            total
+            items {
+              kategorija,
+              naziv,
+              cijena,
+              slikaSrc
+            }
           }
-        }
-      }`;
+        }`;
 
       const categoriesQuery = `
       {
@@ -65,7 +70,8 @@ const Nabava = () => {
           throw new Error(`HTTP error! Status: ${productsResponse.status}`);
         }
 
-        const { data: productsData, errors: productsErrors } = await productsResponse.json();
+        const { data: productsData, errors: productsErrors } =
+          await productsResponse.json();
         if (productsErrors) {
           console.error(productsErrors);
         } else {
@@ -91,13 +97,18 @@ const Nabava = () => {
           throw new Error(`HTTP error! Status: ${categoriesResponse.status}`);
         }
 
-        const { data: categoriesData, errors: categoriesErrors } = await categoriesResponse.json();
+        const { data: categoriesData, errors: categoriesErrors } =
+          await categoriesResponse.json();
         if (categoriesErrors) {
           console.error(categoriesErrors);
         } else {
-          const uniqueCategories: string[] = Array.from(new Set(
-            categoriesData.productCollection.items.map((item: Product) => item.kategorija)
-          ));
+          const uniqueCategories: string[] = Array.from(
+            new Set(
+              categoriesData.productCollection.items.map(
+                (item: Product) => item.kategorija,
+              ),
+            ),
+          );
           setCategories(uniqueCategories);
         }
       } catch (error) {
@@ -106,13 +117,20 @@ const Nabava = () => {
     };
 
     fetchProductsAndCategories();
-  }, [currentPage, productsPerPage, selectedCategory]);
+  }, [currentPage, productsPerPage, selectedCategory, searchQuery]);
 
   if (!products.length) {
     return (
       <div className="mt-auto flex h-full flex-col items-center justify-center text-2xl text-zelena-300">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Pretraži proizvode"
+          className="input input-bordered mb-10"
+        />
         Učitavanje proizvoda
-        <span className="loading loading-ring loading-lg mt-20"></span>
+        <span className="loading loading-ring loading-lg mt-20 mb-32 "></span>
       </div>
     );
   }
@@ -124,6 +142,14 @@ const Nabava = () => {
 
   return (
     <div className="mx-auto flex h-full w-full flex-col items-center justify-center text-zelena-300">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Pretraži proizvode"
+        className="input input-bordered mb-10"
+      />
+
       <select
         id="productsPerPage"
         value={productsPerPage}
@@ -137,22 +163,24 @@ const Nabava = () => {
         <option value={20}>20</option>
         <option value={50}>50</option>
       </select>
-        <div>
-          <label htmlFor="categoryFilter" className="mr-2">Kategorija: </label>
-          <select
-            id="categoryFilter"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="rounded px-4 py-2 font-bold text-brand-800 outline outline-brand-800 hover:bg-brand-800 hover:text-white"
-          >
-            <option value="">Sve kategorije</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div>
+        <label htmlFor="categoryFilter" className="mr-2">
+          Kategorija:{' '}
+        </label>
+        <select
+          id="categoryFilter"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="mb-16 rounded px-4 py-2 font-bold text-zelena-300 outline outline-zelena-300 hover:bg-zelena-300 hover:text-white"
+        >
+          <option value="">Sve kategorije</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="flex flex-wrap justify-center gap-4">
         {products.map((product) => (

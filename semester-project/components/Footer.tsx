@@ -4,7 +4,7 @@ import LogoIcon from './icons/logoIcon';
 
 export default function Footer() {
   return (
-    <footer className="footer bg-base-200 p-10 text-zelena-300">
+    <footer className="footer bg-gray-100 p-10 text-zelena-300">
       <aside>
         <LogoIcon />
         <span className="whitespace-nowrap font-roboto-condensed text-3xl font-bold text-zelena-300">

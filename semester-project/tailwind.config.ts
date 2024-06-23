@@ -1,18 +1,7 @@
 import type { Config } from 'tailwindcss';
 
+// daisyUI config
 const config: Config = {
-  // daisyUI config
-  daisyui: {
-    themes: {
-      mytheme: {
-        'zelena-100': '#7BCB9E',
-        'zelena-200': '#327435',
-        'zelena-300': '#183E28',
-        roza: '#E94D77',
-      },
-    },
-  },
-
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -36,6 +25,9 @@ const config: Config = {
         bez: '#FEEBDC',
       },
     },
+  },
+  daisyui: {
+    themes: [],
   },
   plugins: [require('daisyui')],
 };
