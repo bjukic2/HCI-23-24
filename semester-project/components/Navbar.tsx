@@ -1,9 +1,15 @@
 'use client';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useState } from 'react';
 import LogoIcon from './icons/logoIcon';
+
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...args: ClassValue[]) {
+  return twMerge(clsx(args));
+}
 interface NavbarProps {
   // Record of string keys and string values where each value is a path starting with a slash
   pages: Record<string, `/${string}`>;

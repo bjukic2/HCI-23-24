@@ -20,7 +20,7 @@ export default function Footer() {
           <Link href="/popis">Popis</Link>
         </p>
         <p className="link-hover link">
-          <Link href="/cms/nabava">Nabava</Link>
+          <Link href="/nabava">Nabava</Link>
         </p>
         <p className="link-hover link">
           <Link href="/zdravlje">Zdravlje</Link>

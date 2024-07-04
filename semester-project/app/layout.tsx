@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const pages: Record<string, `/${string}`> = {
   Početna: '/',
   Popis: '/popis',
-  Nabava: '/cms/nabava',
+  Nabava: '/nabava',
   Zdravlje: '/zdravlje',
   Profil: '/profil',
 };

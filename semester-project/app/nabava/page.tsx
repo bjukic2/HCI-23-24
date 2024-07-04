@@ -2,13 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import '@/app/globals.css';
 import ProductCard from '@/components/ProductCard';
+import {
+  fetchProductsPaginated,
+  fetchProductsByCategory,
+  fetchProductsBySearchQuery,
+} from '@/lib/utils';
 
 // Define the Product interface
-interface Product {
+export interface Product {
   kategorija: string;
   naziv: string;
   cijena: number;
   slikaSrc: string;
+  trgovina: string;
+  id: string;
 }
 
 const DEFAULT_PRODUCTS_PER_PAGE = 20;
@@ -17,106 +24,39 @@ const Nabava = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [productsPerPage, setProductsPerPage] = useState<number>(
-    DEFAULT_PRODUCTS_PER_PAGE,
-  );
-  const [categories, setCategories] = useState<string[]>([]);
+  const [productsPerPage, setProductsPerPage] = useState<number>(DEFAULT_PRODUCTS_PER_PAGE);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
-
+  
   useEffect(() => {
-    const fetchProductsAndCategories = async () => {
-      const categoryFilter = selectedCategory
-        ? `, where: { kategorija: "${selectedCategory}" }`
-        : '';
-      const productsQuery = `
-        {
-          productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage} ${categoryFilter} ${
-            searchQuery ? `, where: { naziv_contains: "${searchQuery}" }` : ''
-          }){
-            total
-            items {
-              kategorija,
-              naziv,
-              cijena,
-              slikaSrc
-            }
-          }
-        }`;
-
-      const categoriesQuery = `
-      {
-        productCollection {
-          items {
-            kategorija
-          }
-        }
-      }`;
-
+    const fetchData = async () => {
       try {
-        const productsResponse = await fetch(
-          `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
-            },
-            body: JSON.stringify({ query: productsQuery }),
-          },
-        );
-
-        if (!productsResponse.ok) {
-          throw new Error(`HTTP error! Status: ${productsResponse.status}`);
-        }
-
-        const { data: productsData, errors: productsErrors } =
-          await productsResponse.json();
-        if (productsErrors) {
-          console.error(productsErrors);
+        let response;
+        if (searchQuery) {
+          // Fetch products by search query
+          response = await fetchProductsBySearchQuery(searchQuery);
+        } else if (selectedCategory) {
+          // Fetch products by category
+          response = await fetchProductsByCategory(selectedCategory);
         } else {
-          setProducts(productsData.productCollection.items);
-          setTotalPages(
-            Math.ceil(productsData.productCollection.total / productsPerPage),
-          );
+          // Fetch paginated products
+          response = await fetchProductsPaginated(productsPerPage, currentPage);
         }
-
-        const categoriesResponse = await fetch(
-          `https://graphql.contentful.com/content/v1/spaces/${process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
-            },
-            body: JSON.stringify({ query: categoriesQuery }),
-          },
-        );
-
-        if (!categoriesResponse.ok) {
-          throw new Error(`HTTP error! Status: ${categoriesResponse.status}`);
-        }
-
-        const { data: categoriesData, errors: categoriesErrors } =
-          await categoriesResponse.json();
-        if (categoriesErrors) {
-          console.error(categoriesErrors);
-        } else {
-          const uniqueCategories: string[] = Array.from(
-            new Set(
-              categoriesData.productCollection.items.map(
-                (item: Product) => item.kategorija,
-              ),
-            ),
-          );
-          setCategories(uniqueCategories);
+  
+        if (response && response.data.productCollection) {
+          setProducts(response.data.productCollection.items);
+          // Update total pages if fetching paginated products
+          if (!searchQuery && !selectedCategory) {
+            const totalItems = response.data.productCollection.total;
+            setTotalPages(Math.ceil(totalItems / productsPerPage));
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-    fetchProductsAndCategories();
+  
+    fetchData();
   }, [currentPage, productsPerPage, selectedCategory, searchQuery]);
 
   if (!products.length) {
@@ -174,7 +114,28 @@ const Nabava = () => {
           className="mb-16 rounded px-4 py-2 font-bold text-zelena-300 outline outline-zelena-300 hover:bg-zelena-300 hover:text-white"
         >
           <option value="">Sve kategorije</option>
-          {categories.map((category) => (
+          {[
+            "delikatesni-proizvodi",
+            "domacinstvo",
+            "kucni-ljubimci",
+            "njega-i-higijena",
+            "djecji-svijet",
+            "priprema-kolaca",
+            "pica",
+            "pahuljice-namaz-kava-cajevi",
+            "smrznuta-hrana",
+            "priprema-jela",
+            "umaci-i-zacini",
+            "konzervirano-i-juhe",
+            "tjestenine-riza-njoki",
+            "slatkisi-i-grickalice",
+            "mljecni-proizvodi-i-jaja",
+            "delikatesa",
+            "zdravi-kutak",
+            "pekarnica",
+            "meso",
+            "voce-i-povrce",
+          ].map((category) => (
             <option key={category} value={category}>
               {category}
             </option>

@@ -5,11 +5,10 @@ import Link from 'next/link';
 const ProductCard = ({ product }: { product: any }) => {
   const productName = product.naziv.split(' ').slice(0, 2).join(' ');
   const remainingWords = product.naziv.split(' ').slice(2).join(' ');
-  const normalizedNaziv = normalizeName(product.naziv);
 
   return (
-    <Link href={`/cms/nabava/${encodeURIComponent(normalizedNaziv)}`}>
-      <div className="duration-50 group card w-64 bg-base-100 shadow-xl hover:outline hover:outline-1 hover:outline-zelena-100">
+    <Link href={`/nabava/${product.sys.id}`}>
+      <div className="duration-50 group card w-64 bg-base-100 shadow-[0px_0px_10px_5px_rgba(0,0,0,0.05)] hover:outline hover:outline-1 hover:outline-zelena-100">
         <figure className="pt-5">
           <Image
             src={
@@ -38,12 +37,5 @@ const ProductCard = ({ product }: { product: any }) => {
     </Link>
   );
 };
-
-const normalizeName = (name: string) => {
-  return name.toLowerCase().replace(/\s+/g, '-');
-};
-
-
-
 
 export default ProductCard;

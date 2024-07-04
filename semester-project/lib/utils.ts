@@ -1,30 +1,99 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+// app/api/contentful.ts
+const SPACE_ID = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
+const BASE_URL = `https://graphql.contentful.com/content/v1/spaces/${SPACE_ID}`;
 
-export function cn(...args: ClassValue[]) {
-  return twMerge(clsx(args));
-}
-
-export const fetchProductByNaziv = async (naziv: string) => {
-  try {
-    const url = `https://api.tommy.hr/products?naziv=${encodeURIComponent(naziv)}`;
-    console.log('URL za dohvaćanje proizvoda:', url);  // Debugging: Ispis URL-a za dohvaćanje proizvoda
-    
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error('Network response was not ok');
-    }
-    
-    const data = await res.json();
-    console.log('Dohvaćeni podaci o proizvodu:', data);  // Debugging: Ispis vraćenih podataka
-
-    return data.product || null;
-  } catch (error) {
-    console.error('Greška pri dohvaćanju proizvoda:', error);
-    return null;
-  }
+const headers = {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${ACCESS_TOKEN}`,
 };
 
+async function fetchGraphQL(query: string) {
+  const response = await fetch(BASE_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ query }),
+  });
 
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
 
+  return response.json();
+}
 
+export async function fetchProductsPaginated(productsPerPage: number, currentPage: number) {
+  const query = `
+    {
+      productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
+        total
+        items {
+          kategorija,
+          naziv,
+          cijena,
+          slikaSrc,
+          trgovina,
+          sys {
+            id
+          }
+        }
+      }
+    }`;
+
+  return fetchGraphQL(query);
+}
+
+export async function fetchProductsByCategory(category: string) {
+  const query = `
+    {
+      productCollection(where: { kategorija: "${category}" }){
+        items {
+          kategorija,
+          naziv,
+          cijena,
+          slikaSrc,
+          trgovina,
+          sys {
+            id
+          }
+        }
+      }
+    }`;
+
+  return fetchGraphQL(query);
+}
+
+export async function fetchProductsBySearchQuery(searchQuery: string) {
+  const query = `
+    {
+      productCollection(where: { naziv_contains: "${searchQuery}" }){
+        items {
+          kategorija,
+          naziv,
+          cijena,
+          slikaSrc,
+          trgovina,
+          sys {
+            id
+          }
+        }
+      }
+    }`;
+
+  return fetchGraphQL(query);
+}
+
+export async function fetchProductById(id: string) {
+  const query = `
+    {
+      product(id: "${id}"){
+        kategorija,
+        naziv,
+        cijena,
+        slikaSrc,
+        trgovina,
+      }
+    }`;
+
+  return fetchGraphQL(query);
+}

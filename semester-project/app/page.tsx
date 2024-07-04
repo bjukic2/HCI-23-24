@@ -18,7 +18,7 @@ export default function Home() {
               Pridružite nam se što prije da počnete na jednostavan i zabavan
               način štedjeti novac.
             </p>
-            <a href="/cms/nabava" className="btn mb-16 w-24 bg-roza text-white">
+            <a href="/nabava" className="btn mb-16 w-24 bg-roza text-white">
               Kreni
               <svg
                 xmlns="http://www.w3.org/2000/svg"
