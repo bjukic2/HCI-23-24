@@ -8,7 +8,7 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
     NEXT_PUBLIC_CONTENTFUL_SPACE_ID:
       process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-  }
+  },
 };
 
 module.exports = nextConfig;

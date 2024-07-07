@@ -22,7 +22,89 @@ async function fetchGraphQL(query: string) {
   return response.json();
 }
 
-export async function fetchProductsPaginated(productsPerPage: number, currentPage: number) {
+export async function fetchProducts(
+  productsPerPage: number,
+  currentPage: number,
+  category?: string,
+  searchQuery?: string,
+) {
+  let query = `
+    {
+      productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}) {
+        total
+        items {
+          kategorija,
+          naziv,
+          cijena,
+          slikaSrc,
+          trgovina,
+          sys {
+            id
+          }
+        }
+      }
+    }`;
+
+  if (category && searchQuery) {
+    query = `
+      {
+        productCollection(where: { AND: [{kategorija: "${category}"}, {naziv_contains: "${searchQuery}"}] }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}) {
+          total
+          items {
+            kategorija,
+            naziv,
+            cijena,
+            slikaSrc,
+            trgovina,
+            sys {
+              id
+            }
+          }
+        }
+      }`;
+  } else if (category) {
+    query = `
+      {
+        productCollection(where: { kategorija: "${category}" }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}) {
+          total
+          items {
+            kategorija,
+            naziv,
+            cijena,
+            slikaSrc,
+            trgovina,
+            sys {
+              id
+            }
+          }
+        }
+      }`;
+  } else if (searchQuery) {
+    query = `
+      {
+        productCollection(where: { naziv_contains: "${searchQuery}" }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}) {
+          total
+          items {
+            kategorija,
+            naziv,
+            cijena,
+            slikaSrc,
+            trgovina,
+            sys {
+              id
+            }
+          }
+        }
+      }`;
+  }
+
+  return fetchGraphQL(query);
+}
+
+export async function fetchAllProducts(
+  productsPerPage: number,
+  currentPage: number,
+) {
   const query = `
     {
       productCollection(limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
@@ -43,10 +125,15 @@ export async function fetchProductsPaginated(productsPerPage: number, currentPag
   return fetchGraphQL(query);
 }
 
-export async function fetchProductsByCategory(category: string) {
+export async function fetchProductsByCategory(
+  category: string,
+  productsPerPage: number,
+  currentPage: number,
+) {
   const query = `
     {
-      productCollection(where: { kategorija: "${category}" }){
+      productCollection(where: { kategorija: "${category}" }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
+        total
         items {
           kategorija,
           naziv,
@@ -63,10 +150,40 @@ export async function fetchProductsByCategory(category: string) {
   return fetchGraphQL(query);
 }
 
-export async function fetchProductsBySearchQuery(searchQuery: string) {
+export async function fetchProductsByCategoryAndSearchQuery(
+  category: string,
+  searchQuery: string,
+  productsPerPage: number,
+  currentPage: number,
+) {
   const query = `
     {
-      productCollection(where: { naziv_contains: "${searchQuery}" }){
+      productCollection(where: { AND: [{kategorija: "${category}"}, {naziv_contains: "${searchQuery}"}] }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
+        total
+        items {
+          kategorija,
+          naziv,
+          cijena,
+          slikaSrc,
+          trgovina,
+          sys {
+            id
+          }
+        }
+      }
+    }`;
+
+  return fetchGraphQL(query);
+}
+
+export async function fetchProductsBySearchQuery(
+  searchQuery: string,
+  productsPerPage: number,
+  currentPage: number,
+) {
+  const query = `
+    {
+      productCollection(where: { naziv_contains: "${searchQuery}" }, limit: ${productsPerPage}, skip: ${(currentPage - 1) * productsPerPage}){
         items {
           kategorija,
           naziv,

@@ -1,12 +1,10 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { fetchProductById } from '@/lib/utils';
-import { Product } from '@/app/nabava/page'; 
+import { Product } from '@/app/nabava/page';
 
-export default function ProductPage({ params }: {
-    params: { _id: string }
-}) {
+export default function ProductPage({ params }: { params: { _id: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
@@ -54,4 +52,3 @@ export default function ProductPage({ params }: {
     </div>
   );
 }
-
