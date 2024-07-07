@@ -93,7 +93,7 @@ const Nabava = () => {
 
       <div className="mt-12 flex flex-wrap justify-center gap-4">
         {products.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard key={product.naziv} product={product} />
         ))}
       </div>
 

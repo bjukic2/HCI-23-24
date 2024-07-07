@@ -28,9 +28,6 @@ export default function Footer() {
         <p className="link-hover link">
           <Link href="/profil">Profil</Link>
         </p>
-        <p className="link-hover link">
-          <Link href="/blog">Blog</Link>
-        </p>
       </nav>
       <nav>
         <h6 className="footer-title text-roza">Značajke</h6>
