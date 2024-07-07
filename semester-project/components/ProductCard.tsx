@@ -5,7 +5,7 @@ import Link from 'next/link';
 const ProductCard = ({ product }: { product: any }) => {
   const productName = product.naziv.split(' ').slice(0, 2).join(' ');
   const remainingWords = product.naziv.split(' ').slice(2).join(' ');
-  const kategorija = product.kategorija.split('-').slice(0, 3).join(' ')
+  const kategorija = product.kategorija.split('-').slice(0, 3).join(' ');
 
   return (
     <Link href={`/nabava/${product.sys.id}`}>
