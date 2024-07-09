@@ -31,8 +31,10 @@ export default function ProductPage({ params }: { params: { _id: string } }) {
         <figure className="pt-5">
           <Image
             src={
-              'https://tommy.hr/_next/image?url=https%3A%2F%2Fspiza.tommy.hr%2Fmedia%2Fcache%2Fsylius_shop_api_' +
-              product.slikaSrc
+              product.trgovina === 'konzum'
+              ? product.slikaSrc
+              : 'https://tommy.hr/_next/image?url=https%3A%2F%2Fspiza.tommy.hr%2Fmedia%2Fcache%2Fsylius_shop_api_' +
+                product.slikaSrc
             }
             alt={product.naziv}
             width={300}
