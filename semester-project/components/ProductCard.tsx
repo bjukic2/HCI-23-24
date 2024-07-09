@@ -13,8 +13,10 @@ const ProductCard = ({ product }: { product: any }) => {
         <figure className="pt-5">
           <Image
             src={
-              'https://tommy.hr/_next/image?url=https%3A%2F%2Fspiza.tommy.hr%2Fmedia%2Fcache%2Fsylius_shop_api_' +
-              product.slikaSrc
+              product.trgovina === 'konzum'
+              ? product.slikaSrc
+              : 'https://tommy.hr/_next/image?url=https%3A%2F%2Fspiza.tommy.hr%2Fmedia%2Fcache%2Fsylius_shop_api_' +
+                product.slikaSrc
             }
             alt={product.naziv}
             width={190}
@@ -31,6 +33,10 @@ const ProductCard = ({ product }: { product: any }) => {
           )}
           <p className="text-xl text-zelena-200">{product.cijena}</p>
           <div className="card-actions justify-end">
+            {product.trgovina === 'konzum' 
+            ? <div className="badge badge-outline">{product.trgovina}</div>
+            : <div className="badge badge-outline">tommy</div>
+            }
             <div className="badge badge-outline">{kategorija}</div>
           </div>
         </div>
